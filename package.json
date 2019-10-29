@@ -1,0 +1,16 @@
+{
+  "name": "lambdatest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {},
+  "devDependencies": {
+    "aws-sdk": "^2.556.0",
+    "serverless-offline": "^5.12.0"
+  },
+  "scripts": {
+    "dev": "sls offline start --skipCacheInvalidation"
+  },
+  "author": "",
+  "license": "ISC"
+}

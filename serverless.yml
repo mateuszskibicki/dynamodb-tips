@@ -1,0 +1,122 @@
+service: test-lambda-env
+app: test-lambda-env
+
+provider:
+  name: aws
+  runtime: nodejs10.x # set node.js runtime
+  memorySize: 128 # set the maximum memory of the Lambdas in Megabytes
+  timeout: 10 # the timeout is 10 seconds (default is 6 seconds)
+  stage: dev # setting the env stage to dev, this will be visible in the routes
+  region: eu-west-2
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:eu-west-2:517297148827:table/test"
+    - Effect: "Allow"
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:eu-west-2:517297148827:table/test_2"
+  environment:
+    TEST: test1234
+
+plugins:
+  - serverless-offline # adding the plugin to be able to run the offline emulation
+
+functions:
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: create
+          method: post
+          cors: true
+  create2:
+    handler: handler.create2
+    events:
+      - http:
+          path: create2
+          method: post
+          cors: true
+  createConditionExpression:
+    handler: handler.createConditionExpression
+    events:
+      - http:
+          path: create-ce
+          method: post
+          cors: true
+  update:
+    handler: handler.update
+    events:
+      - http:
+          path: update
+          method: put
+          cors: true
+  updateAtomicCounter:
+    handler: handler.updateAtomicCounter
+    events:
+      - http:
+          path: update-ac
+          method: put
+          cors: true
+  delete:
+    handler: handler.delete
+    events:
+      - http:
+          path: delete
+          method: delete
+          cors: true
+
+  # get here
+  get:
+    handler: handler-get.get
+    events:
+      - http:
+          path: get/{id}
+          method: get
+          cors: true
+  getProjectionExpression:
+    handler: handler-get.getProjectionExpression
+    events:
+      - http:
+          path: get-pe/{id}
+          method: get
+          cors: true
+  query:
+    handler: handler-get.query
+    events:
+      - http:
+          path: query
+          method: get
+          cors: true
+  queryGSI:
+    handler: handler-get.queryGSI
+    events:
+      - http:
+          path: query-gsi/{gsi}
+          method: get
+          cors: true
+  scan:
+    handler: handler-get.scan
+    events:
+      - http:
+          path: scan
+          method: get
+          cors: true
+  scanWithLimit:
+    handler: handler-get.scanWithLimit
+    events:
+      - http:
+          path: scan-limit
+          method: get
+          cors: true
