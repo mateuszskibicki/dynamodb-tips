@@ -112,13 +112,46 @@ module.exports.update = async event => {
   try {
     const response = await docClient
       .update({
-        TableName: "test",
+        TableName: "test_2",
         Key: {
-          id: body.id
+          user_id: body.user_id,
+          timestamp: body.timestamp
         },
-        UpdateExpression: "set #t = :t",
-        ExpressionAttributeNames: { "#t": "title" },
-        ExpressionAttributeValues: { ":t": "NEW TITLE" }
+        UpdateExpression: "set #c = :c",
+        ExpressionAttributeNames: { "#c": "cat" },
+        ExpressionAttributeValues: { ":c": "abceeeddddd" }
+      })
+      .promise();
+    console.log(response);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: true, response })
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: false, err })
+    };
+  }
+};
+
+/**
+|--------------------------------------------------
+| UPDATES and remove local secondary index if don't need
+|--------------------------------------------------
+*/
+module.exports.updateRemoveLSI = async event => {
+  const body = JSON.parse(event.body);
+  try {
+    const response = await docClient
+      .put({
+        TableName: "test_2",
+        Item: {
+          user_id: body.user_id,
+          timestamp: body.timestamp
+          //just don't add any LSI here and it will be removed even if exist but the user_id an timestamp must match what do we have in the database
+        }
       })
       .promise();
     console.log(response);

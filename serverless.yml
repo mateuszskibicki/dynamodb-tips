@@ -62,6 +62,13 @@ functions:
           path: update
           method: put
           cors: true
+  updateRemoveLSI:
+    handler: handler.updateRemoveLSI
+    events:
+      - http:
+          path: update-remove-lsi
+          method: put
+          cors: true
   updateAtomicCounter:
     handler: handler.updateAtomicCounter
     events:
