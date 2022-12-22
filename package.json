@@ -6,7 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "aws-sdk": "^2.556.0",
-    "serverless-offline": "^5.12.0"
+    "serverless-offline": "^12.0.3"
   },
   "scripts": {
     "dev": "sls offline start --skipCacheInvalidation"
